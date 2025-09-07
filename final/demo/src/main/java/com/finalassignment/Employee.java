@@ -3,14 +3,14 @@ package com.finalassignment;
 public abstract class Employee {
 	private String employeeId;
 	private String fullName;
-	private Date dateOfBirth;
+	private String dateOfBirth;
 	private String email;
-	private int phoneNumber;
-	private Date hireDate;
+	private String hireDate;
 	private String departmentId;
-	private Date lastPromotionDate;
+	private String lastPromotionDate;
 	private String jobTitle;
 	private String password;
+	private int phoneNumber;
 	private enum Role {
 		HR,
 		Manager,
@@ -22,23 +22,25 @@ public abstract class Employee {
 	}
 	private Gender gender;
 	private enum Status {
-		Active, termineted
+		Active, Termineted
 	}
-	private Status Status;
+	private Status status;
 	
-	public Employee(String employeeId, String fullName, int dayOfBirth, int monthOfBirth, int yearOfBirth,
-		String email, int phoneNumber, Date hireDate, String departmentId, String status,
-		int dayLastPromotion, int monthLastPromotion, int yearLastPromotion,
-		String jobTitle, String password, String gend) {
+	public Employee(String employeeId, String fullName, String dateOfBirth, String gend,
+		String email, int phoneNumber, String hireDate, String jobTitle, String departmentId, String status,
+		String lastPromotionDate, String password) {
 
-		this.dateOfBirth = new Date(dayOfBirth, monthOfBirth, yearOfBirth);
-		this.lastPromotionDate = new Date(dayLastPromotion, monthLastPromotion, yearLastPromotion);
+		this.dateOfBirth = dateOfBirth;
+		this.hireDate = hireDate;
+		this.lastPromotionDate = lastPromotionDate;
 		this.employeeId = employeeId;
 		this.fullName = fullName;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 		this.departmentId = departmentId;
 		this.jobTitle = jobTitle;
+		
+		// check if the jobTitle has HR or Manager in it to determine the correct role
 		if (jobTitle.contains("HR"))
 			role = Role.HR;
 		else if (jobTitle.contains("Manager"))
@@ -46,14 +48,121 @@ public abstract class Employee {
 		else 
 			role = Role.Employee;
 		
-		if (gend.compare("Male") || gend.compare("Male"))
-			// gender = gender.Male;
-		else
-			// gender = gender.Female;
+		// to determine the correct gender 
+		if (gend.compareTo("Male") == 0 || gend.compareTo("male") == 0)
+			gender = Gender.Male;
+		else if (gend.compareTo("Female") == 0 || gend.compareTo("female") == 0)
+			gender = Gender.Female;
 
-		if (jobTitle.contains("HR"))
-			// gender = gender.Male;
-		else
-			// gender = gender.Female;
+		// to determine the correct status
+		if (status.compareTo("Active") == 0)
+			this.status = Status.Active;
+		else if (gend.compareTo("Termineted") == 0)
+			this.status = Status.Termineted;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public String getEmployeeId() {
+		return employeeId;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	// Generated getters and setters
+	public String getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(String dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getHireDate() {
+		return hireDate;
+	}
+
+	public void setHireDate(String hireDate) {
+		this.hireDate = hireDate;
+	}
+
+	public String getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(String departmentId) {
+		this.departmentId = departmentId;
+	}
+
+	public String getLastPromotionDate() {
+		return lastPromotionDate;
+	}
+
+	public void setLastPromotionDate(String lastPromotionDate) {
+		this.lastPromotionDate = lastPromotionDate;
+	}
+
+	public String getJobTitle() {
+		return jobTitle;
+	}
+
+	public void setJobTitle(String jobTitle) {
+		this.jobTitle = jobTitle;
+	}
+
+	public int getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(int phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }
