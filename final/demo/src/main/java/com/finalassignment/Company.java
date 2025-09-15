@@ -4,10 +4,11 @@
  */
 
 package com.finalassignment;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Company implements IEmployeeAccess {
+public class Company  implements IEmployeeAccess {
 	
 	protected HashMap<String, Employee> employees;
 	protected HashMap<String, Department> departments;
@@ -15,12 +16,11 @@ public class Company implements IEmployeeAccess {
 	protected ArrayList<LeaveRequest> leaveRequests;
 	protected ArrayList<Payroll> payrolls;
 	private IFileStrategy strategy;
+	private IService service;
 
 	private static Company single = null;
 
-	private Company() {
-
-	}
+	private Company() {}
 
 	public static Company getInstance() {
 
@@ -38,6 +38,52 @@ public class Company implements IEmployeeAccess {
 	@Override
 	public void getResponsibility() {
 		
+	}
+
+	public void runTheCompany() {
+		Scanner scan = new Scanner(System.in);
+		ProxyAuthenticator proxy = new ProxyAuthenticator();
+		
+		System.out.println("=== Welcome to Company Portal ===");
+		
+		boolean loggedIn = false;
+		while (!loggedIn) {
+			System.out.print("Enter Employee ID: ");
+			String employeeId = scan.nextLine().trim();
+
+			System.out.print("Enter Password: ");
+			String password = scan.nextLine().trim();
+
+			loggedIn = proxy.authenticate(employeeId, password);
+
+			if (!loggedIn) {
+				System.out.println("Invalid credentials. Try again.\n");
+			}
+		}
+		
+		// After successful login, redirect to the correct service
+		proxy.getResponsibility();
+
+		// Optional: call specific service prompts
+		Employee currentUser = proxy.getRequester();
+		IService service = null;
+
+		switch (currentUser.getRole()) {
+			case "HR":
+				service = new HRResponsibilities();
+				break;
+			case "Manager":
+				service = new ManagerResponsibilities();
+				break;
+			case "Employee":
+				service = new EmployeePortal();
+				break;
+		}
+
+		if (service != null) {
+			System.out.println("\nSelect an option:");
+			service.printServicePrompt(1);
+		}
 	}
 
 	public void setFileStrategy(char mode, String strategy) {
@@ -85,60 +131,8 @@ public class Company implements IEmployeeAccess {
 
 	public void writeToFile(String field) {
 
-		if (field.compareTo("department") == 0) {
-			strategy.write("department_id	department_name	head_of_department_id	budget	location");
-			for (Department d : departments.values()) {
-				strategy.write(
-					d.getId() + "\t" +
-					d.getName() + "\t" +
-					d.getHeadOfDepartmentId() + "\t" +
-					d.getBudget() + "\t" +
-					d.getLocation() + "\n");
-			}
-		}
-		else if (field.compareTo("employee") == 0) {
-			for (Employee e : employees.values()) {
-				// if (e instanceof FullTimeEmployee)
-				// strategy.write(
-				// 	e.getId() + "\t" +
-				// 	e.getName() + "\t" +
-				// 	e.getHeadOfDepartmentId() + "\t" +
-				// 	e.getBudget() + "\t" +
-				// 	e.getLocation());
-			}
-		}
 	}
 
-	public void runTheCompany() {
-
-		// read date from data set
-		departments = new HashMap<>();
-		setFileStrategy('r', "department");
-		readFormFile("department");
-		employees = new HashMap<String, Employee>();
-		setFileStrategy('r', "e-full-time");
-		readFormFile("e-full-time");
-		setFileStrategy('r', "e-part-time");
-		readFormFile("e-part-time");
-		setFileStrategy('r', "e-contract");
-		readFormFile("e-contract");
-		leaveRequests = new ArrayList<>();
-		setFileStrategy('r', "leaves");
-		readFormFile("leaves");
-		payrolls = new ArrayList<>();
-		setFileStrategy('r', "payroll");
-		readFormFile("payroll");
-
-		// loging a certain user
-		
-		// show correct responsibility
-
-		// call correct action based on request
-
-		// writing all changes to files before exiting the program
-	}
-
-	// Generated getters and setters for instance fields
 	public HashMap<String, Employee> getEmployees() {
 		return employees;
 	}
@@ -185,5 +179,13 @@ public class Company implements IEmployeeAccess {
 
 	public void setStrategy(IFileStrategy strategy) {
 		this.strategy = strategy;
+	}
+
+	public IService getService() {
+		return service;
+	}
+
+	public void setService(IService service) {
+		this.service = service;
 	}
 }

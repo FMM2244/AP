@@ -1,6 +1,7 @@
 package com.finalassignment;
 
 public abstract class Employee {
+
 	private String employeeId;
 	private String fullName;
 	private String dateOfBirth;
@@ -11,16 +12,19 @@ public abstract class Employee {
 	private String jobTitle;
 	private String password;
 	private int phoneNumber;
+
 	private enum Role {
 		HR,
 		Manager,
 		Employee
 	}
 	private Role role;
+
 	private enum Gender {
 		Female, Male
 	}
 	private Gender gender;
+
 	private enum Status {
 		Active, Termineted
 	}
@@ -73,7 +77,6 @@ public abstract class Employee {
 		return password;
 	}
 
-	// Generated getters and setters
 	public String getDateOfBirth() {
 		return dateOfBirth;
 	}
@@ -130,16 +133,22 @@ public abstract class Employee {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public Role getRole() {
-		return role;
+	public String getRole() {
+		if (role == Role.HR)
+			return "HR";
+		if (role == Role.Manager)
+			return "Manager";
+		return "Employee";
 	}
 
 	public void setRole(Role role) {
 		this.role = role;
 	}
 
-	public Gender getGender() {
-		return gender;
+	public String getGender() {
+		if (gender == Gender.Female)
+			return "Female";
+		return "Male";
 	}
 
 	public void setGender(Gender gender) {

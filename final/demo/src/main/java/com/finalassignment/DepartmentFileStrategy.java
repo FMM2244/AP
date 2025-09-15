@@ -17,11 +17,11 @@ public class DepartmentFileStrategy implements IFileStrategy {
 	public DepartmentFileStrategy(char mode) {
 		try {
 			if (mode == 'r') {
-				readMode = new File("data/departments.txt");
+				readMode = new File("/home/fatima/Documents/repositories/AP/final/demo/src/main/java/bin/data/departments.txt");
 				scan = new Scanner(readMode);
 			}
 			else if (mode == 'w') {
-				writeMode = new FileWriter("data/departments.txt");
+				writeMode = new FileWriter("/home/fatima/Documents/repositories/AP/final/demo/src/main/java/bin/data/departments.txt");
 			}
 		}
 		catch (IOException e) {

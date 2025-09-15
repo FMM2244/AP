@@ -43,7 +43,7 @@ public class EmployeeFullTimeFileStrategy implements IFileStrategy {
 	}
 
 	@Override
-	public void write() {
+	public void write(String input) {
 
 	}
 
