@@ -2,6 +2,7 @@
  * this is the main class
  * everything starts here ...
  */
+
 package finalAssignment;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,5 +32,8 @@ public class Main {
 
 		// running the company with services
 		company.runTheCompany();
+		
+		// writing data to data set
+		
 	}
 }

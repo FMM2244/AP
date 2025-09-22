@@ -31,11 +31,11 @@ public class EmployeePartTimeFileStrategy implements IFileStrategy {
 		String [] splitedLine = null;
 		String line;
 	
-		if (readMode.canRead()) {
+		if (readMode.canRead() && scan.hasNextLine()) {
 			line = scan.nextLine();
-			if (line.compareTo("employee_id\tfull_name\tdate_of_birth\tgender\temail\tphone_number\thire_date\tjob_title\temployment_type\tdepartment_id\tstatus\tlast_promotion_date\tPassword\tworking_hours_per_month\trate_per_hour\r\n") == 0)
+			if (line.compareTo("employee_id\tfull_name\tdate_of_birth\tgender\temail\tphone_number\thire_date\tjob_title\temployment_type\tdepartment_id\tstatus\tlast_promotion_date\tPassword\tworking_hours_per_month\trate_per_hour") == 0)
 				line = scan.nextLine();
-			splitedLine = line.split("\t ");
+			splitedLine = line.split("\t");
 		}
 
 		return splitedLine;
@@ -46,7 +46,6 @@ public class EmployeePartTimeFileStrategy implements IFileStrategy {
 
 	}
 
-	// Generated getters and setters
 	public File getReadMode() {
 		return readMode;
 	}

@@ -17,6 +17,8 @@ public class ProxyAuthenticator implements IEmployeeAccess {
 
         requester = company.getEmployees().get(employeeId);
 
+        // System.out.println("debugging print: " + requester.getPassword());
+
         if (requester.getPassword().equals(password)) {
             System.out.println("Login successful! Welcome, " + requester.getFullName());
             return true;

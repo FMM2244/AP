@@ -33,11 +33,14 @@ public class EmployeeFullTimeFileStrategy implements IFileStrategy {
 	
 		if (readMode.canRead() && scan.hasNextLine()) {
 			line = scan.nextLine();
-			if (line.compareTo("employee_id\tfull_name\tdate_of_birth\tgender\temail\tphone_number\thire_date\tjob_title\temployment_type\tdepartment_id\tstatus\tlast_promotion_date\tPassword\tsalary_base\r\n") == 0)
+			if (line.compareTo("employee_id\tfull_name\tdate_of_birth\tgender\temail\tphone_number\thire_date\tjob_title\temployment_type\tdepartment_id\tstatus\tlast_promotion_date\tPassword\tsalary_base") == 0)
 				line = scan.nextLine();
-			splitedLine = line.split("\t ");
+			splitedLine = line.split("\t");
 		}
 
+//		for (int i = 0; i != 14; i++) {
+//			System.out.println(i + ": " + splitedLine[i]);
+//		}
 		return splitedLine;
 	}
 

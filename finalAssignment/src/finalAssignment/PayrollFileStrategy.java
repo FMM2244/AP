@@ -33,9 +33,9 @@ public class PayrollFileStrategy implements IFileStrategy {
 	
 		if (readMode.canRead() && scan.hasNextLine()) {
 			line = scan.nextLine();
-			if (line.compareTo("payroll_id\temployee_id\tmonth\tbase_salary\tbonuses\tdeductions\tnet_salary\ttax_withheld\tprocessed_date\r\n") == 0)
+			if (line.compareTo("payroll_id\temployee_id\tmonth\tbase_salary\tbonuses\tdeductions\tnet_salary\ttax_withheld\tprocessed_date") == 0)
 				line = scan.nextLine();
-			splitedLine = line.split("\t ");
+			splitedLine = line.split("\t");
 		}
 
 		return splitedLine;

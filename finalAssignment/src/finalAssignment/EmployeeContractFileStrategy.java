@@ -33,9 +33,9 @@ public class EmployeeContractFileStrategy implements IFileStrategy {
 	
 		if (readMode.canRead() && scan.hasNextLine()) {
 			line = scan.nextLine();
-			if (line.compareTo("employee_id\tfull_name\tdate_of_birth\tgender\temail\tphone_number\thire_date\tjob_title\tEmployee_type\tdepartment_id\tstatus\tlast_promotion_date\tpassword\tduration\toverall_payment\r\n") == 0)
+			if (line.compareTo("employee_id\tfull_name\tdate_of_birth\tgender\temail\tphone_number\thire_date\tjob_title\tEmployee_type\tdepartment_id\tstatus\tlast_promotion_date\tpassword\tduration\toverall_payment") == 0)
 				line = scan.nextLine();
-			splitedLine = line.split("\t ");
+			splitedLine = line.split("\t");
 		}
 
 		return splitedLine;
@@ -46,7 +46,6 @@ public class EmployeeContractFileStrategy implements IFileStrategy {
 
 	}
 
-	// Generated getters and setters
 	public File getReadMode() {
 		return readMode;
 	}

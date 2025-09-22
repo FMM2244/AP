@@ -33,9 +33,9 @@ public class LeavesFileStrategy implements IFileStrategy {
 	
 		if (readMode.canRead() && scan.hasNextLine()) {
 			line = scan.nextLine();
-			if (line.compareTo("leave_id\temployee_id\tleave_type\tstart_date\tend_date\tapproval_status\tapprover_id\r\n") == 0)
+			if (line.compareTo("leave_id\temployee_id\tleave_type\tstart_date\tend_date\tapproval_status\tapprover_id") == 0)
 				line = scan.nextLine();
-			splitedLine = line.split("\t ");
+			splitedLine = line.split("\t");
 		}
 
 		return splitedLine;

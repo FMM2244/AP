@@ -12,7 +12,7 @@ public abstract class Employee {
 	private String lastPromotionDate;
 	private String jobTitle;
 	private String password;
-	private int phoneNumber;
+	private String phoneNumber;
 
 	private enum Role {
 		HR,
@@ -22,17 +22,19 @@ public abstract class Employee {
 	private Role role;
 
 	private enum Gender {
-		Female, Male
+		Female,
+		Male
 	}
 	private Gender gender;
 
 	private enum Status {
-		Active, Termineted
+		Active,
+		Termineted
 	}
 	private Status status;
 	
 	public Employee(String employeeId, String fullName, String dateOfBirth, String gend,
-		String email, int phoneNumber, String hireDate, String jobTitle, String departmentId, String status,
+		String email, String phoneNumber, String hireDate, String jobTitle, String departmentId, String status,
 		String lastPromotionDate, String password) {
 
 		this.dateOfBirth = dateOfBirth;
@@ -44,6 +46,7 @@ public abstract class Employee {
 		this.phoneNumber = phoneNumber;
 		this.departmentId = departmentId;
 		this.jobTitle = jobTitle;
+		this.password = password;
 		
 		// check if the jobTitle has HR or Manager in it to determine the correct role
 		if (jobTitle.contains("HR"))
@@ -126,11 +129,11 @@ public abstract class Employee {
 		this.jobTitle = jobTitle;
 	}
 
-	public int getPhoneNumber() {
+	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(int phoneNumber) {
+	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 
@@ -142,8 +145,12 @@ public abstract class Employee {
 		return "Employee";
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
+	public void setRole(String role) {
+		if (role.compareTo("HR") == 0)
+			this.role = Role.HR;
+		if (role.compareTo("Manager") == 0)
+			this.role = Role.Manager;
+		this.role = Role.Employee;
 	}
 
 	public String getGender() {

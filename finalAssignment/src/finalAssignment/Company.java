@@ -31,9 +31,7 @@ public class Company implements IEmployeeAccess {
 	}
 	
 	@Override
-	public void getResponsibility() {
-		
-	}
+	public void getResponsibility() {}
 
 	public void runTheCompany() {
 		Scanner scan = new Scanner(System.in);
@@ -48,6 +46,8 @@ public class Company implements IEmployeeAccess {
 
 			System.out.print("Enter Password: ");
 			String password = scan.nextLine().trim();
+			
+			// System.out.println("debugging print statement: " + employeeId + ", " + password);
 
 			loggedIn = proxy.authenticate(employeeId, password);
 
@@ -55,7 +55,6 @@ public class Company implements IEmployeeAccess {
 				System.out.println("Invalid credentials. Try again.\n");
 			}
 		}
-		scan.close();
 
 		// After successful login, redirect to the correct service
 		proxy.getResponsibility();
@@ -67,19 +66,23 @@ public class Company implements IEmployeeAccess {
 		switch (currentUser.getRole()) {
 			case "HR":
 				service = new HRResponsibilities();
+				service.setUser(currentUser);
 				break;
 			case "Manager":
 				service = new ManagerResponsibilities();
+				service.setUser(currentUser);
 				break;
 			case "Employee":
 				service = new EmployeePortal();
+				service.setUser(currentUser);
 				break;
 		}
 
 		if (service != null) {
 			System.out.println("\nSelect an option:");
-			service.printServicePrompt(1);
+			service.printServicePrompt();
 		}
+		scan.close();
 	}
 
 	public void setFileStrategy(char mode, String strategy) {
@@ -92,7 +95,7 @@ public class Company implements IEmployeeAccess {
 		else if (strategy.compareTo("e-part-time") == 0) {
 			this.strategy = new EmployeePartTimeFileStrategy(mode);
 		}
-		else if (strategy.compareTo("e-part-time") == 0) {
+		else if (strategy.compareTo("e-contract") == 0) {
 			this.strategy = new EmployeeContractFileStrategy(mode);
 		}
 		else if (strategy.compareTo("leaves") == 0) {
@@ -108,23 +111,20 @@ public class Company implements IEmployeeAccess {
 		String [] data;
 
 		data = strategy.read();
-		System.out.println(data[0]);
 		while (data != null && data[0] != null) {
-			data = strategy.read();
-			if (data != null && data[0] != null)
-				break ;
 			if (field.compareTo("department") == 0)
 				departments.put(data[0], new Department(data[0], data[1], data[2], Double.parseDouble(data[3]), data[4]));
 			else if (field.compareTo("e-full-time") == 0)
-				employees.put(data[0], new FullTimeEmployee(data[0], data[1], data[2], data[3], data[4], Integer.parseInt(data[5]), data[6], data[7], data[9], data[10], data[11], data[12], Double.parseDouble(data[13])));
+				employees.put(data[0], new FullTimeEmployee(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[9], data[10], data[11], data[12], Double.parseDouble(data[13])));
 			else if (field.compareTo("e-part-time") == 0)
-				employees.put(data[0], new PartTimeEmployee(data[0], data[1], data[2], data[3], data[4], Integer.parseInt(data[5]), data[6], data[7], data[9], data[10], data[11], data[12], Integer.parseInt(data[13]), Double.parseDouble(data[14])));
+				employees.put(data[0], new PartTimeEmployee(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[9], data[10], data[11], data[12], Integer.parseInt(data[13]), Double.parseDouble(data[14])));
 			else if (field.compareTo("e-contract") == 0)
-				employees.put(data[0], new ContractEmployee(data[0], data[1], data[2], data[3], data[4], Integer.parseInt(data[5]), data[6], data[7], data[9], data[10], data[11], data[12], Double.parseDouble(data[13]), Double.parseDouble(data[14])));
+				employees.put(data[0], new ContractEmployee(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[9], data[10], data[11], data[12], Double.parseDouble(data[13]), Double.parseDouble(data[14])));
 			else if (field.compareTo("leaves") == 0)
 				leaveRequests.add(new LeaveRequest(data[0], data[1], data[2], data[3], data[4], data[5], data[6]));
 			else if (field.compareTo("payroll") == 0)
 				payrolls.add(new Payroll(data[0], data[1], data[2], Double.parseDouble(data[3]), Double.parseDouble(data[4]), Double.parseDouble(data[5]), Double.parseDouble(data[6]), Double.parseDouble(data[7]), data[8]));
+			data = strategy.read();
 		}
 	}
 

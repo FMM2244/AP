@@ -23,7 +23,7 @@ public class LeaveRequest {
 		this.startDate = startDate;
 		this.endDate = endDate;
 
-		// status = Status.Pending;
+//		 status = Status.Pending;
 	}
 	
 	public String getStatus() {
@@ -42,7 +42,6 @@ public class LeaveRequest {
 			status = Status.Rejected;
 	}
 
-	// Generated getters and setters (excluding existing status accessors)
 	public String getLeaveId() {
 		return leaveId;
 	}

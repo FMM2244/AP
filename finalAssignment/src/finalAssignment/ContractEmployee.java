@@ -5,7 +5,7 @@ public class ContractEmployee extends Employee {
 	private double overallPayment;
 
 	public ContractEmployee(String employeeId, String fullName, String dateOfBirth, String gend,
-		String email, int phoneNumber, String hireDate, String jobTitle, String departmentId, String status,
+		String email, String phoneNumber, String hireDate, String jobTitle, String departmentId, String status,
 		String lastPromotionDate, String password, double duration, double overallPayment) {
 		
 		super(employeeId, fullName, dateOfBirth, gend, email, phoneNumber, hireDate,
