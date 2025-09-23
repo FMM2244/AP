@@ -26,6 +26,21 @@ public class EmployeeFullTimeFileStrategy implements IFileStrategy {
 		}
 	}
 
+	public EmployeeFullTimeFileStrategy(char mode, boolean append) {
+		try {
+			if (mode == 'r') {
+				readMode = new File("data/employees_full_time.txt");
+				scan = new Scanner(readMode);
+			}
+			else if (mode == 'w') {
+				writeMode = new FileWriter("data/employees_full_time.txt", append);
+			}
+		}
+		catch (IOException e) {
+			System.out.println("sorry!!! a problem occurred while reading or righting from the full time employee file");
+		}
+	}
+
 	@Override
 	public String [] read() {
 		String [] splitedLine = null;
@@ -37,19 +52,29 @@ public class EmployeeFullTimeFileStrategy implements IFileStrategy {
 				line = scan.nextLine();
 			splitedLine = line.split("\t");
 		}
-
-//		for (int i = 0; i != 14; i++) {
-//			System.out.println(i + ": " + splitedLine[i]);
-//		}
+		
 		return splitedLine;
 	}
 
 	@Override
 	public void write(String input) {
-
+		try {
+			writeMode.write(input + "\n");
+		}
+		catch (Exception e) {
+			System.out.println("sorry!!! a problem occurred while writing to Full Time Employee file");
+		}
+	}
+	
+	public void close() {
+		try {
+			writeMode.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	// Generated getters and setters
 	public File getReadMode() {
 		return readMode;
 	}

@@ -27,6 +27,22 @@ public class DepartmentFileStrategy implements IFileStrategy {
 		}
 	}
 
+	public DepartmentFileStrategy(char mode, boolean append) {
+		try {
+			if (mode == 'r') {
+				readMode = new File("data/departments.txt");
+				scan = new Scanner(readMode);
+			}
+			else if (mode == 'w') {
+				writeMode = new FileWriter("data/departments.txt", append);
+			}
+		}
+		catch (IOException e) {
+			System.out.println("sorry!!! a problem occurred while reading or righting from the Department file");
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public String [] read() {
 		
@@ -45,7 +61,21 @@ public class DepartmentFileStrategy implements IFileStrategy {
 
 	@Override
 	public void write(String input) {
-		
+		try {
+			writeMode.write(input + "\n");
+		}
+		catch (Exception e) {
+			System.out.println("sorry!!! a problem occurred while writing to Department file");
+		}
+	}
+	
+	public void close() {
+		try {
+			writeMode.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public File getReadMode() {

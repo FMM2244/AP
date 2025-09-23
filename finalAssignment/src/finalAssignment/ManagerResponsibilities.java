@@ -48,6 +48,7 @@ public class ManagerResponsibilities implements IService {
 			if (leaves.get(i).getLeaveId().compareTo(id) == 0) {
 				leaves.get(i).setStatus("approved");
 				leaves.get(i).setApproverId(user.getEmployeeId());
+				System.out.println("\nLeave request approved successfully\n");
 				return ;
 			}
 		}
@@ -62,6 +63,7 @@ public class ManagerResponsibilities implements IService {
 			if (leaves.get(i).getLeaveId().compareTo(id) == 0) {
 				leaves.get(i).setStatus("rejected");
 				leaves.get(i).setApproverId(user.getEmployeeId());
+				System.out.println("\nLeave request rejected successfully\n");
 				return ;
 			}
 		}
@@ -76,6 +78,7 @@ public class ManagerResponsibilities implements IService {
 			if (leaves.get(i).getLeaveId().compareTo(id) == 0) {
 				leaves.get(i).setStatus("delayed");
 				leaves.get(i).setApproverId(user.getEmployeeId());
+				System.out.println("\nLeave request delayed successfully\n");
 				return ;
 			}
 		}

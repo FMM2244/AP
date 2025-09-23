@@ -77,7 +77,7 @@ public class HRResponsibilities implements IService {
 			company.setEmployees(map);
 		}
 		else if (company.getEmployees().containsKey(employeeId)) {
-			System.out.println("\nInvalid employee ID, employee already exists");
+			System.out.println("\nInvalid employee ID, employee already exists\n");
 			return ;
 		}
 
@@ -121,6 +121,7 @@ public class HRResponsibilities implements IService {
 			return ;
 		}
 		company.getEmployees().put(employeeId, newEmployee);
+		System.out.println("\nEmployee Added successfully\n");
 	}
 	
 	// separated logic for interactive updates on an employee
@@ -168,8 +169,14 @@ public class HRResponsibilities implements IService {
 				break;
 			case 3:
 				System.out.print("New Phone Number: ");
-                        try { target.setPhoneNumber(scan.nextLine().trim()); }
-				catch (Exception e) { System.out.println("Invalid phone number"); return; }
+                try {
+                	target.setPhoneNumber(scan.nextLine().trim());
+                }
+				catch (Exception e) {
+					System.out.println("Invalid phone number"); 
+					input.close();
+					return;
+				}
 				break;
 			case 4:
 				System.out.print("New Job Title: ");
@@ -199,6 +206,7 @@ public class HRResponsibilities implements IService {
 					}
 					catch (Exception e) {
 						System.out.println("Invalid salary");
+						input.close();
 						return;
 					}
 				}
@@ -209,6 +217,7 @@ public class HRResponsibilities implements IService {
 					}
 					catch (Exception e) {
 						System.out.println("Invalid hours");
+						input.close();
 						return;
 					}
 				}
@@ -219,6 +228,7 @@ public class HRResponsibilities implements IService {
 					}
 					catch (Exception e) {
 						System.out.println("Invalid duration");
+						input.close();
 						return;
 					}
 				}
@@ -231,6 +241,7 @@ public class HRResponsibilities implements IService {
                     }
 					catch (Exception e) {
 						System.out.println("Invalid rate");
+						input.close();
 						return;
 					}
 				}
@@ -241,19 +252,22 @@ public class HRResponsibilities implements IService {
 					}
 					catch (Exception e) {
 						System.out.println("Invalid amount");
+						input.close();
 						return;
 					}
 				}
 				else {
 					System.out.println("Invalid option");
+					input.close();
 					return;
 				}
 				break;
 			default:
 				System.out.println("Invalid option");
+				input.close();
 				return;
 		}
-
+		input.close();
 		System.out.println("Employee updated successfully.");
 	}
 
@@ -369,6 +383,10 @@ public class HRResponsibilities implements IService {
 			System.out.println("Invalid employee ID");
 			return ;
 		}
+		if (target.getStatus().compareTo("Termineted") == 0) {
+			System.out.println("\nInvalid ID, Employee is Termineted\n");
+			return ;
+		}
 		
 		System.out.print("Enter todays date: ");
         String promotionDate = scan.nextLine();
@@ -380,14 +398,17 @@ public class HRResponsibilities implements IService {
 		if (roleStr.equalsIgnoreCase("HR")) {
 			target.setRole("HR");
 			target.setLastPromotionDate(promotionDate);
+			System.out.println("\nEmployee promoted successfully\n");
 		}
 		else if (roleStr.equalsIgnoreCase("Manager")) {
 			target.setRole("Manager");
 			target.setLastPromotionDate(promotionDate);
+			System.out.println("\nEmployee promoted successfully\n");
 		}
 		else if (roleStr.equalsIgnoreCase("Manager")) {
 			target.setJobTitle("Employee");
 			target.setLastPromotionDate(promotionDate);
+			System.out.println("\nEmployee promoted successfully\n");
 		}
 		else {
 			System.out.println("\nInvalid role promotion\n");

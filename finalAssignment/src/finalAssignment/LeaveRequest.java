@@ -22,8 +22,8 @@ public class LeaveRequest {
 		this.approverId = approverId;
 		this.startDate = startDate;
 		this.endDate = endDate;
-
-//		 status = Status.Pending;
+		setStatus(status);
+		setType(type);
 	}
 	
 	public String getStatus() {
@@ -38,8 +38,10 @@ public class LeaveRequest {
 	public void setStatus(String stat) {
 		if (stat.compareTo("Approved") == 0)
 			status = Status.Approved;
-		if (stat.compareTo("Rejected") == 0)
+		else if (stat.compareTo("Rejected") == 0)
 			status = Status.Rejected;
+		else if (stat.compareTo("Pending") == 0)
+			status = Status.Pending;
 	}
 
 	public String getLeaveId() {
@@ -82,12 +84,31 @@ public class LeaveRequest {
 		this.endDate = endDate;
 	}
 
-	public Type getType() {
-		return type;
+	public String getType() {
+		if (type == Type.Maternity)
+			return "Maternity";
+		else if (type == Type.Paternity)
+			return "Paternity";
+		else if (type == Type.Sick)
+			return "Sick";
+		else if (type == Type.Unpaid)
+			return "Unpaid";
+		else if (type == Type.Vacation)
+			return "Vacation";
+		return "";
 	}
 
-	public void setType(Type type) {
-		this.type = type;
+	public void setType(String type) {
+		if (type.compareTo("Maternity") == 0)
+			this.type = Type.Maternity;
+		else if (type.compareTo("Paternity") == 0)
+			this.type = Type.Paternity;
+		else if (type.compareTo("Sick") == 0)
+			this.type = Type.Sick;
+		else if (type.compareTo("Unpaid") == 0)
+			this.type = Type.Unpaid;
+		else if (type.compareTo("Vacation") == 0)
+			this.type = Type.Vacation;
 	}
 }
 

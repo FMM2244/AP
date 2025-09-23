@@ -5,13 +5,13 @@ import java.util.HashMap;
 
 public class Company implements IEmployeeAccess {
 	
-	protected HashMap<String, Employee> employees;
-	protected HashMap<String, Department> departments;
-	protected ArrayList<IReport> reports;
-	protected ArrayList<LeaveRequest> leaveRequests;
-	protected ArrayList<Payroll> payrolls;
-	private IFileStrategy strategy;
-	private IService service;
+	public HashMap<String, Employee> employees;
+	public HashMap<String, Department> departments;
+	public ArrayList<IReport> reports;
+	public ArrayList<LeaveRequest> leaveRequests;
+	public ArrayList<Payroll> payrolls;
+	public IFileStrategy strategy;
+	public IService service;
 
 	private static Company single = null;
 
@@ -106,6 +106,27 @@ public class Company implements IEmployeeAccess {
 		}
 	}
 	
+	public void setFileStrategy(char mode, String strategy, boolean append) {
+		if (strategy.compareTo("department") == 0) {
+			this.strategy = new DepartmentFileStrategy(mode, append);	
+		}
+		else if (strategy.compareTo("e-full-time") == 0) {
+			this.strategy = new EmployeeFullTimeFileStrategy(mode, append);
+		}
+		else if (strategy.compareTo("e-part-time") == 0) {
+			this.strategy = new EmployeePartTimeFileStrategy(mode, append);
+		}
+		else if (strategy.compareTo("e-contract") == 0) {
+			this.strategy = new EmployeeContractFileStrategy(mode, append);
+		}
+		else if (strategy.compareTo("leaves") == 0) {
+			this.strategy = new LeavesFileStrategy(mode, append);
+		}
+		else if (strategy.compareTo("payroll") == 0) {
+			this.strategy = new PayrollFileStrategy(mode, append);
+		}
+	}
+	
 	public void readFormFile(String field) {
 		
 		String [] data;
@@ -130,6 +151,111 @@ public class Company implements IEmployeeAccess {
 
 	public void writeToFile(String field) {
 
+		if (field.compareTo("department") == 0) {
+			strategy.write("department_id\tdepartment_name\thead_of_department_id\tbudget\tlocation");
+			for (Department temp : departments.values()) {
+				strategy.write(temp.getId() + "\t"
+						+ temp.getName() + "\t"
+						+ temp.getHeadOfDepartmentId() + "\t"
+						+ Double.toString(temp.getBudget()) + "\t"
+						+ temp.getLocation());
+			}
+		}
+		else if (field.compareTo("employee") == 0) {
+			setFileStrategy('w', "e-full-time");
+			strategy.write("employee_id\tfull_name\tdate_of_birth\tgender\temail\tphone_number\thire_date\tjob_title\temployment_type\tdepartment_id\tstatus\tlast_promotion_date\tPassword\tsalary_base");
+			strategy.close();
+			setFileStrategy('w', "e-part-time");
+			strategy.write("employee_id\tfull_name\tdate_of_birth\tgender\temail\tphone_number\thire_date\tjob_title\temployment_type\tdepartment_id\tstatus\tlast_promotion_date\tPassword\tworking_hours_per_month\trate_per_hour");
+			strategy.close();
+			setFileStrategy('w', "e-contract");
+			strategy.write("employee_id\tfull_name\tdate_of_birth\tgender\temail\tphone_number\thire_date\tjob_title\tEmployee_type\tdepartment_id\tstatus\tlast_promotion_date\tpassword\tduration\toverall_payment");
+			strategy.close();
+			for (Employee temp : employees.values()) {
+				if (temp instanceof FullTimeEmployee) {
+					setFileStrategy('w', "e-full-time", true);
+					strategy.write(temp.getEmployeeId() + "\t"
+							+ temp.getFullName() + "\t"
+							+ temp.getDateOfBirth() + "\t"
+							+ temp.getGender() + "\t"
+							+ temp.getEmail() + "\t"
+							+ temp.getPhoneNumber() + "\t"
+							+ temp.getHireDate() + "\t"
+							+ temp.getJobTitle() + "\t"
+							+ "Full-time\t"
+							+ temp.getDepartmentId() + "\t"
+							+ temp.getStatus() + "\t"
+							+ temp.getLastPromotionDate() + "\t"
+							+ temp.getPassword() + "\t"
+							+ ((FullTimeEmployee)temp).getSalary());
+					strategy.close();
+				}
+				else if (temp instanceof PartTimeEmployee) {
+					setFileStrategy('w', "e-part-time", true);
+					strategy.write(temp.getEmployeeId() + "\t"
+							+ temp.getFullName() + "\t"
+							+ temp.getDateOfBirth() + "\t"
+							+ temp.getGender() + "\t"
+							+ temp.getEmail() + "\t"
+							+ temp.getPhoneNumber() + "\t"
+							+ temp.getHireDate() + "\t"
+							+ temp.getJobTitle() + "\t"
+							+ "Part-time\t"
+							+ temp.getDepartmentId() + "\t"
+							+ temp.getStatus() + "\t"
+							+ temp.getLastPromotionDate() + "\t"
+							+ temp.getPassword() + "\t"
+							+ ((PartTimeEmployee)temp).getMothlyWorkingHours() + "\t"
+							+ ((PartTimeEmployee)temp).getHourlyRate());
+					strategy.close();
+				}
+				else if (temp instanceof ContractEmployee) {
+					setFileStrategy('w', "e-contract", true);
+					strategy.write(temp.getEmployeeId() + "\t"
+							+ temp.getFullName() + "\t"
+							+ temp.getDateOfBirth() + "\t"
+							+ temp.getGender() + "\t"
+							+ temp.getEmail() + "\t"
+							+ temp.getPhoneNumber() + "\t"
+							+ temp.getHireDate() + "\t"
+							+ temp.getJobTitle() + "\t"
+							+ "Contractor\t"
+							+ temp.getDepartmentId() + "\t"
+							+ temp.getStatus() + "\t"
+							+ temp.getPassword() + "\t"
+							+ temp.getLastPromotionDate() + "\t"
+							+ ((ContractEmployee)temp).getDuration() + "\t"
+							+ ((ContractEmployee)temp).getOverallPayment());
+					strategy.close();
+				}
+			}
+		}
+		else if (field.compareTo("leaves") == 0) {
+			strategy.write("leave_id\temployee_id\tleave_type\tstart_date\tend_date\tapproval_status\tapprover_id");
+			for (LeaveRequest temp : leaveRequests) {
+				strategy.write(temp.getLeaveId() + "\t"
+						+ temp.getEmployeeId() + "\t"
+						+ temp.getType() + "\t"
+						+ temp.getStartDate() + "\t"
+						+ temp.getEndDate() + "\t"
+						+ temp.getStatus() + "\t"
+						+ temp.getApproverId());
+			}
+		}
+		else if (field.compareTo("payroll") == 0) {
+			strategy.write("payroll_id\temployee_id\tmonth\tbase_salary\tbonuses\tdeductions\tnet_salary\ttax_withheld\tprocessed_date");
+			for (Payroll temp : payrolls) {
+				strategy.write(temp.getPayrollId() + "\t"
+						+ temp.getEmployeeId() + "\t"
+						+ temp.getMonth() + "\t"
+						+ temp.getBaseSalary() + "\t"
+						+ temp.getBonuses() + "\t"
+						+ temp.getDeductions() + "\t"
+						+ temp.getNetSalary() + "\t"
+						+ temp.getTaxWithheld() + "\t"
+						+ temp.getProcessedDate());
+			}
+		}
 	}
 
 	public HashMap<String, Employee> getEmployees() {

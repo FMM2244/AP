@@ -10,35 +10,15 @@ public class EmployeePortal implements IService {
 	
 	public EmployeePortal() {}
 	
-	public void createLeaveRequest() {
-		
+	public void createLeaveRequest(String id, String employeeId, String type, String startDate, String endDate) {
 		Company temp = Company.getInstance();
-		ArrayList<LeaveRequest> leaves = temp.getLeaveRequests();
-		
-		System.out.println("Please enter the following info:");
-
-		System.out.println("Leave Type: ");
-		String type = scan.nextLine();
-		if (type.compareTo("Vacation") != 0 && type.compareTo("Unpaid") != 0 && type.compareTo("Maternity") != 0 && type.compareTo("Sick") != 0 && type.compareTo("Paternity") != 0) {
-			System.out.println("Invalid leave request type");
-			return ;
-		}
-		System.out.print("Leave ID: ");
-		String id = scan.nextLine().trim();
-		for (int i = 0; i < leaves.size(); i++) {
-			if (leaves.get(i).getLeaveId().compareTo(id) == 0) {
-				System.out.println("Invalid leave ID, this ID already exists");
-				return ;
-			}
-		}
-		System.out.print("Start Date: ");
-		String startDate = scan.nextLine();
-		System.out.print("End Date: ");
-		String endDate = scan.nextLine();
-		temp.getLeaveRequests().addLast(new LeaveRequest(id, user.getEmployeeId(), type, startDate, endDate, "Pending", "empty"));
+		temp.getLeaveRequests().addLast(new LeaveRequest(id, employeeId, type, startDate, endDate, "Pending", "empty"));
 	}
 	
-	private void displayPersonalInfo(Employee employee) {
+	public boolean displayPersonalInfo(Employee employee) {
+		Company temp = Company.getInstance();
+		if (!temp.getEmployees().containsKey(employee.getEmployeeId()))
+				return false ;
 		System.out.println("Employee Info:\n"
 				+ "1. Full Name: " + employee.getFullName()
 				+ "\n2. Email: " + employee.getEmail()
@@ -60,6 +40,7 @@ public class EmployeePortal implements IService {
 			System.out.println("9. Monthly Working Hours: " + ((ContractEmployee)employee).getDuration());
 			System.out.println("10. Overall Payment: " + ((ContractEmployee)employee).getOverallPayment());
 		}
+		return true;
 	}
 
 	public void updatePersonalInfo(Employee employee) {
@@ -93,7 +74,7 @@ public class EmployeePortal implements IService {
 			System.out.println("Invalid option");
 				return;
 		}
-		System.out.println("Employee updated successfully.");
+		System.out.println("\nEmployee updated successfully\n");
 	}
 
 
@@ -112,12 +93,41 @@ public class EmployeePortal implements IService {
 			
 			if (option.compareTo("1") == 0) {
 				displayPersonalInfo(user);
-				updatePersonalInfo(user);
 			}
 			else if (option.compareTo("2") == 0) {
-				createLeaveRequest();
+				updatePersonalInfo(user);
 			}
 			else if (option.compareTo("3") == 0) {
+				Company temp = Company.getInstance();
+				ArrayList<LeaveRequest> leaves = temp.getLeaveRequests();
+				
+				System.out.println("Please enter the following info:");
+
+				System.out.println("Leave Type: ");
+				String type = scan.nextLine();
+				if (type.compareTo("Vacation") != 0 && type.compareTo("Unpaid") != 0 && type.compareTo("Maternity") != 0 && type.compareTo("Sick") != 0 && type.compareTo("Paternity") != 0) {
+					System.out.println("Invalid leave request type");
+					return ;
+				}
+				System.out.print("Leave ID: ");
+				String id = scan.nextLine().trim();
+				for (int i = 0; i < leaves.size(); i++) {
+					if (leaves.get(i).getLeaveId().compareTo(id) == 0) {
+						System.out.println("Invalid leave ID, this ID already exists");
+						return ;
+					}
+				}
+				System.out.print("Start Date: ");
+				String startDate = scan.nextLine();
+				System.out.print("End Date: ");
+				String endDate = scan.nextLine();
+				if (endDate.compareTo(startDate) < 0) {
+					System.out.println("\nInvalid start and end dates\n");
+					return ;
+				}
+				createLeaveRequest(id, user.getEmployeeId(), type, startDate, endDate);
+			}
+			else if (option.compareTo("4") == 0) {
 				System.out.println("See you soon...");
 				scan.close();
 				break ;

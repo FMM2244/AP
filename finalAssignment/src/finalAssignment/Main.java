@@ -9,9 +9,9 @@ import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
-
+	
 		Company company = Company.getInstance();
-
+	
 		// read date from data set
 		company.departments = new HashMap<>();
 		company.setFileStrategy('r', "department");
@@ -29,11 +29,20 @@ public class Main {
 		company.payrolls = new ArrayList<>();
 		company.setFileStrategy('r', "payroll");
 		company.readFormFile("payroll");
-
+	
 		// running the company with services
 		company.runTheCompany();
 		
-		// writing data to data set
-		
+		company.setFileStrategy('w', "department");
+		company.writeToFile("department");
+		company.strategy.close();
+		company.writeToFile("employee");
+		company.strategy.close();
+		company.setFileStrategy('w', "leaves");
+		company.writeToFile("leaves");
+		company.strategy.close();
+		company.setFileStrategy('w', "payroll");
+		company.writeToFile("payroll");
+		company.strategy.close();
 	}
 }

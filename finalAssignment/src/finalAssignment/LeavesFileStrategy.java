@@ -26,6 +26,21 @@ public class LeavesFileStrategy implements IFileStrategy {
 		}
 	}
 
+	public LeavesFileStrategy(char mode, boolean append) {
+		try {
+			if (mode == 'r') {
+				readMode = new File("data/leaves.txt");
+				scan = new Scanner(readMode);
+			}
+			else if (mode == 'w') {
+				writeMode = new FileWriter("data/leaves.txt", append);
+			}
+		}
+		catch (IOException e) {
+			System.out.println("sorry!!! a problem occurred while reading or righting from the leaves file");
+		}
+	}
+
 	@Override
 	public String [] read() {
 		String [] splitedLine = null;
@@ -43,7 +58,21 @@ public class LeavesFileStrategy implements IFileStrategy {
 
 	@Override
 	public void write(String input) {
-
+		try {
+			writeMode.write(input + "\n");
+		}
+		catch (Exception e) {
+			System.out.println("sorry!!! a problem occurred while writing to Leaves file");
+		}
+	}
+	
+	public void close() {
+		try {
+			writeMode.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public File getReadMode() {

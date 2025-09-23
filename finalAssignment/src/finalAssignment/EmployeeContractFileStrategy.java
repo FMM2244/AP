@@ -26,6 +26,21 @@ public class EmployeeContractFileStrategy implements IFileStrategy {
 		}
 	}
 
+	public EmployeeContractFileStrategy(char mode, boolean append) {
+		try {
+			if (mode == 'r') {
+				readMode = new File("data/employees_contract.txt");
+				scan = new Scanner(readMode);
+			}
+			else if (mode == 'w') {
+				writeMode = new FileWriter("data/employees_contract.txt", append);
+			}
+		}
+		catch (IOException e) {
+			System.out.println("sorry!!! a problem occurred while reading or righting from the contract employee file");
+		}
+	}
+
 	@Override
 	public String [] read() {
 		String [] splitedLine = null;
@@ -43,7 +58,21 @@ public class EmployeeContractFileStrategy implements IFileStrategy {
 
 	@Override
 	public void write(String input) {
-
+		try {
+			writeMode.write(input + "\n");
+		}
+		catch (Exception e) {
+			System.out.println("sorry!!! a problem occurred while writing to Contract Employee file");
+		}
+	}
+	
+	public void close() {
+		try {
+			writeMode.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public File getReadMode() {

@@ -163,12 +163,16 @@ public abstract class Employee {
 		this.gender = gender;
 	}
 
-	public Status getStatus() {
-		return status;
+	public String getStatus() {
+		if (status == Status.Active)
+			return "Active";
+		return "Termineted";
 	}
 
-	public void setStatus(Status status) {
-		this.status = status;
+	public void setStatus(String status) {
+		if (status.compareTo("Terminated") == 0)
+			this.status = Status.Termineted;
+		this.status = Status.Active;
 	}
 
 	public void setEmployeeId(String employeeId) {
